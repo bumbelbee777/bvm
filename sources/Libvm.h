@@ -6,5 +6,5 @@
 
 using namespace libvm;
 using namespace libvm::CPU;
-uaing namespace libvm::RAM;
+using namespace libvm::RAM;
 using namespace libvm::Flags;
