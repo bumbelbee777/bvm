@@ -1,6 +1,6 @@
 //uhhhh... a half-baked emulator frontend that does nothing for now?
 
-#include <libvm.h>
+#include <Libvm.h>
 
 int main() {
     //TODO: would be nice to have an SDL window
