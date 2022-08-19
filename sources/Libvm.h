@@ -2,6 +2,8 @@
 
 #include <cstddef>
 
+using namespace std;
+
 namespace libvm {
     namespace CPU {
         void SetDreg1Data(uint8_t Value);

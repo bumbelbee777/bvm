@@ -1,4 +1,4 @@
-name: Makefile CI
+name: Build and test (ubuntu)
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
     - name: Install dependencies
       run: sudo apt-get install clang libc++-dev
     - name: Build library
-      run: make all
+      run: make -C sources all
   
   test:
     runs-on: ubuntu-latest
