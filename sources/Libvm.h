@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 namespace libvm {
     namespace CPU {
         void SetDreg1Data(uint8_t Value);

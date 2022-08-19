@@ -33,7 +33,7 @@ namespace libvm {
             dreg1 = 0;
             dreg2 = 0;
             IsRunning = true;
-            DebugPrint("CPU is up and running!");
+            DebugPrint("CPU is up and running!\n Availble RAM: %s", RamSize);
         }
 
         void HaltCPU(void) {
