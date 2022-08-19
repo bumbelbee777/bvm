@@ -19,11 +19,11 @@ namespace libvm {
             dreg2 = Value;
         }
 
-        uint8_t GetDreg1Data(void) {
+        uint8_t GetDreg1Data() {
             return dreg1;
         }
 
-        uint8_t GetDreg2Data(void) {
+        uint8_t GetDreg2Data() {
             return dreg2;
         }
 

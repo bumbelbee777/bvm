@@ -9,8 +9,8 @@ namespace libvm {
     namespace CPU {
         void SetDreg1Data(uint8_t Value);
         void SetDreg2Data(uint8_t Value);
-        void GetDreg1Data(void);
-        void GetDreg2Data(void);
+        void GetDreg1Data();
+        void GetDreg2Data();
         void StartCPU(uint8_t RamSize);
         void HaltCPU(void);
         bool IsRunning;
