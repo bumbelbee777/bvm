@@ -1,2 +1,5 @@
 all:
-	clang++ -shared *.hpp -o libvm.so -I.
+	clang++ -shared *.cpp -o libvm.so -I.
+
+test:
+	clang++ Main.cpp -o bvm -I.
