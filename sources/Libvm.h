@@ -16,7 +16,7 @@ namespace libvm {
     }
 
     namespace Flags {
-        void DebugPrint(string Message);
+        void DebugPrint(string Message, ...);
     }
 
     namespace RAM {

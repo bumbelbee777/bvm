@@ -9,7 +9,7 @@ namespace libvm {
     namespace Flags {
         bool Verbose = false;
 
-        void DebugPrint(string Message) {
+        void DebugPrint(string Message, ...) {
             if(Verbose) {
                 cout << "[DEBUG]" << Message << endl;
             }
