@@ -13,6 +13,7 @@ namespace libvm {
         void GetDreg2Data(void);
         void StartCPU(uint8_t RamSize);
         void HaltCPU(void);
+        bool IsRunning;
     }
 
     namespace Flags {

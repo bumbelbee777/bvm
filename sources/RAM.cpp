@@ -1,5 +1,3 @@
-#pragma once
-
 #include <Libvm.h>
 #include <iostream>
 
