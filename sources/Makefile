@@ -1,5 +1,5 @@
 all:
-	clang++ -shared *.cpp -o libvm.so -I.
+	clang++ -shared *.cpp -o libvm.so -I. -fpic
 
 test:
-	clang++ Main.cpp -o bvm -I.
+	clang++ Main.cpp -o bvm -I. -fpic
