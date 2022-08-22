@@ -6,6 +6,7 @@ using namespace libvm::Flags;
 
 namespace libvm {
     namespace CPU {
+        bool IsRunning = false;
         uint8_t dreg1; //data register 1
         uint8_t dreg2; //data register 2
 
