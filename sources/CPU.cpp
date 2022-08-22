@@ -28,7 +28,7 @@ namespace libvm {
             return dreg2;
         }
 
-        void StartCPU(uint8_t RamSize) {
+        void StartCPU(long int RamSize) {
             dreg1 = 0;
             dreg2 = 0;
             IsRunning = true;

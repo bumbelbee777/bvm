@@ -11,7 +11,7 @@ namespace libvm {
         void SetDreg2Data(uint8_t Value);
         uint8_t GetDreg1Data(void);
         uint8_t GetDreg2Data(void);
-        void StartCPU(uint8_t RamSize);
+        void StartCPU(long int RamSize);
         void HaltCPU(void);
     }
 
