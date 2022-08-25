@@ -9,6 +9,7 @@ namespace libvm {
         bool IsRunning = false;
         uint8_t dreg1; //data register 1
         uint8_t dreg2; //data register 2
+        int ic;        //instruction counter
 
         void SetDreg1Data(uint8_t Value) {
             DebugPrint("DREG1 has been set to %s", Value);
@@ -40,6 +41,20 @@ namespace libvm {
             dreg2 = 0;
             IsRunning = false;
             DebugPrint("CPU halted!");
+        }
+
+        void ClockCycle(void) {
+            if(!IsRunning) {
+                DebugPrint("tried to cycle while CPU isn't running");
+                return;
+            }
+
+            CurrentInstruction = ic; //FIXME: add actual RAM
+
+            switch(CurrentInstruction) {
+                case 0x00: //hlt
+                    HaltCPU();
+            }
         }
     }
 }

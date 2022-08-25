@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstddef>
+#include <vector>
 #include <string>
 
 using namespace std;
@@ -21,5 +22,9 @@ namespace libvm {
 
     namespace RAM {
        uint8_t ReadIndex(uint8_t Index); 
+    }
+
+    namespace ROM {
+        vector<uint8_t> Read(const char* FileName);
     }
 }
