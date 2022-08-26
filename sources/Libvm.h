@@ -14,6 +14,7 @@ namespace libvm {
         uint8_t GetDreg2Data(void);
         void StartCPU(long int RamSize);
         void HaltCPU(void);
+        void ClockCycle(void);
     }
 
     namespace Flags {

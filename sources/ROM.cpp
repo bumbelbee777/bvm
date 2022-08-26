@@ -5,6 +5,7 @@
 
 using namespace std;
 using namespace libvm;
+using namespace libvm::Flags;
 
 namespace libvm {
     namespace ROM {
