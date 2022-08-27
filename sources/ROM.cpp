@@ -20,7 +20,7 @@ namespace libvm {
                 return FileData;
             } else {
                 printf("couldn't read ROM file!");
-                return;
+                return 1;
             }
         }
     }

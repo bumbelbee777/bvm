@@ -32,9 +32,9 @@ namespace libvm {
         }
 
         void SwapRegisters(void) {
-            printf("Swapped DREG1 with DREG2");
             dreg1 = dreg2;
             dreg2 = dreg1;
+            printf("Swapped DREG1 with DREG2");
         }
 
         void StartCPU(uint8_t RamSize) {
@@ -72,7 +72,7 @@ namespace libvm {
 
                 default:
                     printf("Got unkown instruction, exiting...");
-                    return 1;
+                    return;
             }
         }
     }
