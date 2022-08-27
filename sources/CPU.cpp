@@ -58,7 +58,7 @@ namespace libvm {
                 return;
             }
 
-            uint8_t CurrentInstruction = RAM::TotalRAM[ic];
+            uint8_t CurrentInstruction = TotalRAM[ic];
 
             switch(CurrentInstruction) {
                 case 0x00: //hlt
