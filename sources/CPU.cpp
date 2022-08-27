@@ -41,7 +41,7 @@ namespace libvm {
             dreg1 = 0;
             dreg2 = 0;
             IsRunning = true;
-            cout << "CPU is up and running!" << endl << "Availble RAM: " <<  RamSize << endl;
+            cout << "CPU is up and running!" << endl;
         }
 
         void HaltCPU(void) {
