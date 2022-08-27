@@ -11,7 +11,7 @@ clean-win32:
 	del libvm.dll bvm.exe
 
 bvm-posix:
-	clang++ emulator/bvm.cpp -o bvm -I. -L. -llibbvm
+	clang++ emulator/bvm.cpp -o bvm -I. -L. -llibvm
 
 bvm-win32:
-	clang++ emulator/bvm.cpp -o bvm.exe -I. -L. -llibbvm
+	clang++ emulator/bvm.cpp -o bvm.exe -I. -L. -llibvm
