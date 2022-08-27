@@ -1,8 +1,17 @@
-all:
+posix:
 	clang++ -shared *.cpp -o libvm.so -I. -fpic
 
-test:
-	clang++ Main.cpp -o bvm -I. -fpic
+win32:
+	clang++ -shared *.cpp -o libvm.dll -I. -fpic
 
-clean:
-	rm -rf *.so bvm
+clean-posix:
+	rm -rf libvm.so bvm
+
+clean-win32:
+	del libvm.dll bvm.exe
+
+bvm-posix:
+	clang++ bvm/bvm.cpp -o bvm -I. -L. -lbvm
+
+bvm-win32:
+	clang++ bvm/bvm.cpp -o bvm.exe -I. -L. -lbvm

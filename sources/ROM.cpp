@@ -5,7 +5,6 @@
 
 using namespace std;
 using namespace libvm;
-using namespace libvm::Flags;
 
 namespace libvm {
     namespace ROM {
@@ -20,7 +19,7 @@ namespace libvm {
                 file.read((char*) &FileData[0], FileSize);
                 return FileData;
             } else {
-                DebugPrint("couldn't read ROM file!");
+                printf("couldn't read ROM file!");
                 return;
             }
         }

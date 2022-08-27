@@ -12,17 +12,16 @@ namespace libvm {
         void SetDreg2Data(uint8_t Value);
         uint8_t GetDreg1Data(void);
         uint8_t GetDreg2Data(void);
-        void StartCPU(long int RamSize);
+        void SwapRegisters(void);
+        void StartCPU(uint8_t RamSize);
         void HaltCPU(void);
         void ClockCycle(void);
     }
 
-    namespace Flags {
-        void DebugPrint(string Message, ...);
-    }
-
     namespace RAM {
-       uint8_t ReadIndex(uint8_t Index); 
+        uint8_t TotalRAM[0x70000]; //TODO: make RAM configurable by user, pobably a vector
+        uint8_t ReadIndex(uint8_t Index); 
+        uint8_t SetMemoryLocation(uint8_t Index, int Value);
     }
 
     namespace ROM {
