@@ -17,7 +17,7 @@ jobs:
     - name: Install dependencies
       run: sudo apt-get install clang libc++-dev
     - name: Build library
-      run: make -C sources all
+      run: make -C sources all-posix
   
   test:
     runs-on: ubuntu-latest
