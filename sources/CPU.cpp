@@ -4,7 +4,6 @@
 #include <Libvm.h>
 
 using namespace std;
-using namespace libvm::Flags;
 
 namespace libvm {
     namespace CPU {
