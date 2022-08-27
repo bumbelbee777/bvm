@@ -13,7 +13,7 @@ namespace libvm {
         uint8_t GetDreg1Data(void);
         uint8_t GetDreg2Data(void);
         void SwapRegisters(void);
-        void StartCPU(uint8_t RamSize);
+        void StartCPU(/*uint8_t RamSize*/);
         void HaltCPU(void);
         void ClockCycle(void);
     }

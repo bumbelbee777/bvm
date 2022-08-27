@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <iostream>
 #include <cstdio>
 #include <Libvm.h>
 
@@ -14,12 +15,12 @@ namespace libvm {
         int ic;        //instruction counter
 
         void SetDreg1Data(uint8_t Value) {
-            printf("DREG1 has been set to %s", Value);
+            cout << "DREG1 has been set to " << Value << endl;
             dreg1 = Value;
         }
 
         void SetDreg2Data(uint8_t Value) {
-            printf("DREG2 has been set to %s", Value);
+            cout << "DREG2 has been set to " << Value << endl;
             dreg2 = Value;
         }
 
@@ -37,11 +38,11 @@ namespace libvm {
             printf("Swapped DREG1 with DREG2");
         }
 
-        void StartCPU(uint8_t RamSize) {
+        void StartCPU(/*uint8_t RamSize*/) {
             dreg1 = 0;
             dreg2 = 0;
             IsRunning = true;
-            printf("CPU is up and running!\n Availble RAM: %s", RamSize);
+            cout << "CPU is up and running!" << endl << "Availble RAM: " <<  RamSize << endl;
         }
 
         void HaltCPU(void) {

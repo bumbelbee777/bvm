@@ -2,7 +2,6 @@
 #include <vector>
 #include <iostream>
 
-using namespace libvm::Flags;
 using namespace std;
 
 namespace libvm {
