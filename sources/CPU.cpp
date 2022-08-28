@@ -24,7 +24,7 @@ namespace libvm {
             memset(TotalRAM, 0, 0x70000);
             for(int i = 0x000; i <= 0x1666; i++) {
                 if(i - 0x0000 > ROM.size()) break;
-                TotalRAM[i - 0x0000];
+                TotalRAM[i] = ROM[i - 0x0000];
             }
             IsRunning = true;
             cout << "Emulator is up and running!" << endl;
