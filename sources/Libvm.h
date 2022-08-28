@@ -8,13 +8,8 @@ using namespace std;
 
 namespace libvm {
     namespace CPU {
-        void SetD1Data(uint8_t Value);
-        void SetD2Data(uint8_t Value);
-        uint8_t GetD1Data(void);
-        uint8_t GetD2Data(void);
-        void SwapRegisters(void);
-        void StartCPU(/*uint8_t RamSize*/);
-        void HaltCPU(void);
+        void StartEmulator(vector<uint8_t> ROM);
+        void HaltEmulator(void);
         void ClockCycle(void);
     }
 

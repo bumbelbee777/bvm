@@ -15,30 +15,6 @@ namespace libvm {
         uint8_t sp; = 0x1666;//stack pointer
         uint8_t ic; //instruction counter
 
-        void SetD1Data(uint8_t Value) {
-            cout << "d1 has been set to " << Value << endl;
-            d1 = Value;
-        }
-
-        void SetD2Data(uint8_t Value) {
-            cout << "d2 has been set to " << Value << endl;
-            d2 = Value;
-        }
-
-        uint8_t GetD1Data(void) {
-            return d1;
-        }
-
-        uint8_t GetD2Data(void) {
-            return d2;
-        }
-
-        void SwapRegisters(void) {
-            d1 = d2;
-            d2 = d1;
-            printf("Swapped d1 with d2");
-        }
-
         void StartEmulator(vector<uint8_t> ROM) {
             if(IsRunning) {
                 printf("Tried to start CPU while it's running, exiting...");
