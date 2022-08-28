@@ -11,10 +11,10 @@ namespace libvm {
     namespace CPU {
         bool IsRunning = false;
     
-        uint8_t d1  = 0; //data register 1
-        uint8_t d2  = 0; //data register 2
-        uint8_t sp = 0x1666;//stack pointer
-        uint8_t ic; //instruction counter
+        uint8_t d1  = 0;        //data register 1
+        uint8_t d2  = 0;        //data register 2
+        uint8_t sp  = 0x1666;   //stack pointer
+        uint8_t ic  = 0x0000;   //instruction counter
 
         void StartEmulator(vector<uint8_t> ROM) {
             if(IsRunning) {
@@ -60,19 +60,21 @@ namespace libvm {
                     printf("nop");
                     return;
 
-                case 0xA0: //and
-                    printf("and");
+                case 0xA0: //andr
+                    d1 = d1 & d2;
                     ic++;
+                    printf("andr");
                     return;
 
                 case 0xA1: //or
-                    printf("or");
                     ic++;
+                    printf("or");
                     return;
 
-                case 0xA2: //not
-                    printf("not");
+                case 0xA2: //notr
+                    d1 = d1 ! d2;
                     ic++;
+                    printf("notr");
                     return;
 
                 case 0xB0: //addr
