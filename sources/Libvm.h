@@ -8,10 +8,10 @@ using namespace std;
 
 namespace libvm {
     namespace CPU {
-        void Setd1Data(uint8_t Value);
-        void Setd2Data(uint8_t Value);
-        uint8_t Getd1Data(void);
-        uint8_t Getd2Data(void);
+        void SetD1Data(uint8_t Value);
+        void SetD2Data(uint8_t Value);
+        uint8_t GetD1Data(void);
+        uint8_t GetD2Data(void);
         void SwapRegisters(void);
         void StartCPU(/*uint8_t RamSize*/);
         void HaltCPU(void);
@@ -19,8 +19,7 @@ namespace libvm {
     }
 
     namespace RAM {
-        uint8_t ReadIndex(uint8_t Index); 
-        uint8_t SetMemoryLocation(uint8_t Index, int Value);
+        uint8_t TotalRAM[0x70000];
     }
 
     namespace ROM {
