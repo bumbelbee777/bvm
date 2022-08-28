@@ -13,7 +13,7 @@ namespace libvm {
     
         uint8_t d1  = 0; //data register 1
         uint8_t d2  = 0; //data register 2
-        uint8_t sp; = 0x1666;//stack pointer
+        uint8_t sp = 0x1666;//stack pointer
         uint8_t ic; //instruction counter
 
         void StartEmulator(vector<uint8_t> ROM) {
