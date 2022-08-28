@@ -1,6 +1,7 @@
 #include <cstddef>
 #include <iostream>
 #include <cstdio>
+#include <cstring>
 #include <Libvm.h>
 
 using namespace std;
