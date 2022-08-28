@@ -51,7 +51,7 @@ namespace libvm {
             switch(CurrentInstruction) {
                 case 0x00: //hlt
                     printf("hlt");
-                    HaltCPU();
+                    HaltEmulator();
                     return;
 
                 case 0x01: //nop
