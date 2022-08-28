@@ -8,10 +8,10 @@ using namespace std;
 
 namespace libvm {
     namespace CPU {
-        void SetDreg1Data(uint8_t Value);
-        void SetDreg2Data(uint8_t Value);
-        uint8_t GetDreg1Data(void);
-        uint8_t GetDreg2Data(void);
+        void Setd1Data(uint8_t Value);
+        void Setd2Data(uint8_t Value);
+        uint8_t Getd1Data(void);
+        uint8_t Getd2Data(void);
         void SwapRegisters(void);
         void StartCPU(/*uint8_t RamSize*/);
         void HaltCPU(void);
