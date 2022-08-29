@@ -47,7 +47,7 @@ namespace libvm {
                 throw 1;
             }
 
-            uint8_t CurrentInstruction = TotalRAM[ic]; //FIXME: this is temporary
+            uint8_t CurrentInstruction = TotalRAM[ic];
 
             switch(CurrentInstruction) {
                 case 0x00: //hlt
@@ -60,45 +60,34 @@ namespace libvm {
                     printf("nop");
                     return;
 
-                case 0xA0: //andr
+                case 0xA0: //and
                     d1 = d1 & d2;
                     ic++;
-                    printf("andr");
+                    printf("and");
                     return;
 
-                case 0xA1: //or
-                    ic++;
-                    printf("or");
-                    return;
-
-                case 0xA2: //notr
-                    d1 = d1 ! d2;
-                    ic++;
-                    printf("notr");
-                    return;
-
-                case 0xB0: //addr
+                case 0xB0: //add
                     d1 += d2;
                     ic++;
-                    printf("addr");
+                    printf("add");
                     return;
 
-                case 0xB1: //subr
+                case 0xB1: //sub
                     d1 -= d2;
                     ic++;
-                    printf("subr");
+                    printf("sub");
                     return;
 
                 case 0xB2: //mulr
                     d1 *= d2;
                     ic++;
-                    printf("mulr");
+                    printf("mul");
                     return;
 
                 case 0xB3: //divr
                     d1 /= d2;
                     ic++;
-                    printf("divr");
+                    printf("div");
                     return;
 
                 case 0xB4: //sqrt
