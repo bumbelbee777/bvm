@@ -2,16 +2,10 @@ posix:
 	clang++ -shared *.cpp -o libvm.so -I. -fpic
 
 win32:
-	clang++ -shared *.cpp -o libvm.dll -I. -fpic
+	clang++ -shared *.cpp -o libvm.dll -I.
 
 clean-posix:
-	rm -rf libvm.so bvm
+	rm -rf libvm.so
 
 clean-win32:
-	del libvm.dll bvm.exe
-
-bvm-posix:
-	clang++ emulator/bvm.cpp -o bvm -I. -L. -llibvm
-
-bvm-win32:
-	clang++ emulator/bvm.cpp -o bvm.exe -I. -L. -llibvm
+	del libvm.dll

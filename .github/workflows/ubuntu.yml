@@ -17,4 +17,4 @@ jobs:
     - name: Install dependencies
       run: sudo apt-get install clang libc++-dev
     - name: Build library
-      run: make -C sources posix
+      run: make lib-posix
