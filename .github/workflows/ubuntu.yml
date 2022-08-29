@@ -18,3 +18,5 @@ jobs:
       run: sudo apt-get install clang libc++-dev
     - name: Build library
       run: make lib-posix
+    - name: Build Assembler
+      run: make bas-posix
