@@ -72,19 +72,25 @@ namespace libvm {
                     printf("add");
                     return;
 
+                case 0xB1: //xor
+                    d1 = d1 ^ d2;
+                    ic++;
+                    printf("xor");
+                    return;
+
                 case 0xB1: //sub
                     d1 -= d2;
                     ic++;
                     printf("sub");
                     return;
 
-                case 0xB2: //mulr
+                case 0xB2: //mul
                     d1 *= d2;
                     ic++;
                     printf("mul");
                     return;
 
-                case 0xB3: //divr
+                case 0xB3: //div
                     d1 /= d2;
                     ic++;
                     printf("div");
