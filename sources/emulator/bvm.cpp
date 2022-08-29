@@ -7,10 +7,9 @@ using namespace libvm;
 
 int main(int argc, char *argv[]) {
     if(argc == 0) {
-        cout << "bvm: no arguments provided." << endl;
+        cout << "bvm: No arguments provided." << endl;
     } else {
         ROM::Read(argv[0]);
-        CPU::StartCPU();
-        CPU::ClockCycle();
+        CPU::StartEmulator();
     }
 }

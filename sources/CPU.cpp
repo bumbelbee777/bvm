@@ -33,6 +33,7 @@ namespace libvm {
             }
             IsRunning = true;
             cout << "Emulator is up and running!" << endl;
+            ClockCycle();
         }
 
         void HaltEmulator(void) {
