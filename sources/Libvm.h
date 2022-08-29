@@ -13,10 +13,6 @@ namespace libvm {
         void ClockCycle(void);
     }
 
-    namespace RAM {
-        uint8_t TotalRAM[0x70000];
-    }
-
     namespace ROM {
         vector<uint8_t> Read(const char* FileName);
     }

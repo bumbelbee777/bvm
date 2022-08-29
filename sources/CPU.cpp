@@ -3,17 +3,22 @@
 #include <cstdio>
 #include <cstring>
 #include <Libvm.h>
+#include <stdint.h>
 
 using namespace std;
-using namespace libvm::RAM;
 
 namespace libvm {
+    namespace RAM {
+        uint8_t TotalRAM[0x70000];
+    }
+
     namespace CPU {
+        using namespace libvm::RAM;
         bool IsRunning = false;
     
         uint8_t d1  = 0;        //data register 1
         uint8_t d2  = 0;        //data register 2
-        uint8_t sp  = 0x1666;   //stack pointer
+        uint8_t sp  = (uint8_t)0x1666;   //stack pointer
         uint8_t ic  = 0x0000;   //instruction counter
 
         void StartEmulator(vector<uint8_t> ROM) {
@@ -66,16 +71,16 @@ namespace libvm {
                     printf("and");
                     return;
 
+                case 0xA1: //xor
+                    d1 = d1 ^ d2;
+                    ic++;
+                    printf("xor");
+                    return;
+
                 case 0xB0: //add
                     d1 += d2;
                     ic++;
                     printf("add");
-                    return;
-
-                case 0xB1: //xor
-                    d1 = d1 ^ d2;
-                    ic++;
-                    printf("xor");
                     return;
 
                 case 0xB1: //sub
