@@ -1,4 +1,3 @@
-#include <corecrt_wstdio.h>
 #include <fstream>
 #include <iostream>
 #include <Assembler.h>
