@@ -13,5 +13,7 @@ namespace libvm {
         };
 
         string CurrentLabel = ".default";
+
+        void AssembleFile(string InputFile, string OutputFileName);
     }
 }

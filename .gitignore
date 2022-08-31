@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# LibVM test files
+*.rom
+*.asm

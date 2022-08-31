@@ -1,11 +1,14 @@
 #include <cstddef>
+#include <cmath>
 #include <iostream>
 #include <cstdio>
 #include <cstring>
 #include <Libvm.h>
 #include <stdint.h>
+#include <stdio.h>
 
 using namespace std;
+using namespace libvm::RAM;
 
 namespace libvm {
     namespace RAM {
@@ -103,18 +106,21 @@ namespace libvm {
                     return;
 
                 case 0xB4: //sqrt
-                    printf("sqrt");
+                    sqrt(d1);
                     ic++;
+                    printf("sqrt");
                     return;
 
                 case 0xB5: //pow
-                    printf("pow");
+                    pow(d1, d2);
                     ic++;
+                    printf("pow");
                     return;
 
                 case 0xC0: //jmp
+                    uint8_t Address;
+                    ic = Address;
                     printf("jmp");
-                    ic++;
                     return;
 
                 case 0xC1: //je
@@ -135,6 +141,31 @@ namespace libvm {
                 case 0xC4: //jnz
                     printf("jnz");
                     ic++;
+                    return;
+
+                case 0xD0: //mov
+                    ic++;
+                    printf("mov");
+                    return;
+
+                case 0xE0: //inb
+                    ic++;
+                    printf("inb");
+                    return;
+
+                case 0xE1: //outb
+                    ic++;
+                    printf("outb");
+                    return;
+
+                case 0xF0: //push
+                    ic++;
+                    printf("push");
+                    return;
+
+                case 0xF1: //pop
+                    ic++;
+                    printf("pop");
                     return;
 
                 default:
