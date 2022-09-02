@@ -3,7 +3,7 @@
 
 using namespace std;
 
-namespace libvm {
+namespace Libvm {
     namespace Assembler {
         enum ArgumentType {
             Label,

@@ -5,10 +5,10 @@ lib-win32:
 	make -C sources/ win32
 
 bvm-posix:
-	make -C sources/emulator posix
+	make -C sources/bvm posix
 
 bvm-win32:
-	make -C sources/emulator win32
+	make -C sources/bvm win32
 
 bas-posix:
 	make -C sources/assembler posix

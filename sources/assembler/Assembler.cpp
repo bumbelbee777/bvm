@@ -8,7 +8,7 @@
 
 using namespace std;
 
-namespace libvm {
+namespace Libvm {
     namespace Assembler {
         map<string, uint8_t> OpCodes {
             {"hlt", 0x00},
@@ -45,6 +45,7 @@ namespace libvm {
             InFile.open(InputFile,ios::out);
             if(InFile.is_open()) {
                 while (!InFile.eof()) {
+                    
                 }
                 InFile.close();
             }

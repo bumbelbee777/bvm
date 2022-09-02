@@ -4,9 +4,9 @@
 #include <iostream>
 
 using namespace std;
-using namespace libvm;
+using namespace Libvm;
 
-namespace libvm {
+namespace Libvm {
     namespace ROM {
         vector<uint8_t> Read(const char* FileName) {
             ifstream file(FileName, ios::binary);
@@ -19,7 +19,7 @@ namespace libvm {
                 file.read((char*) &FileData[0], FileSize);
                 return FileData;
             } else {
-                printf("couldn't read ROM file!");
+                cerr << "couldn't read ROM file " << FileName << ", exiting..." << endl;
                 throw 1;
             }
         }

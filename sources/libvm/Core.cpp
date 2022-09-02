@@ -8,9 +8,9 @@
 #include <stdio.h>
 
 using namespace std;
-using namespace libvm::RAM;
+using namespace Libvm::RAM;
 
-namespace libvm {
+namespace Libvm {
     namespace RAM {
         uint8_t TotalRAM[0x70000];
     }
@@ -21,7 +21,9 @@ namespace libvm {
     
         uint8_t d1  = 0;        //data register 1
         uint8_t d2  = 0;        //data register 2
-        uint8_t sp  = (uint8_t)0x1666;   //stack pointer
+        float f1 = 0;           //floating point register 1
+        float f2 = 0;           //floating point register 2
+        uint8_t sp  = (uint8_t)0x1667;   //stack pointer
         uint8_t ic  = 0x0000;   //instruction counter
 
         void StartEmulator(vector<uint8_t> ROM) {
@@ -41,7 +43,7 @@ namespace libvm {
 
         void HaltEmulator(void) {
             if(!IsRunning) {
-                printf("Tried to halt emulator while it's not running, exiting...");
+                cerr << "Tried to halt emulator while it's not running, exiting...";
                 throw 1;
             }
             d1 = 0;
@@ -67,6 +69,16 @@ namespace libvm {
                 case 0x01: //nop
                     ic++;
                     printf("nop");
+                    return;
+
+                case 0x02: //mov
+                    uint8_t x = RAM::TotalRAM[ic + 1], y = RAM::TotalRAM[ic + 2];
+                    if(y > sizeof(RAM::TotalRAM)) {
+                        cerr << "MOV tried to write to " << y << "which is beyond availble RAM, exiting..." << endl;
+                        throw 1;
+                    } else {
+                        RAM::TotalRAM[x] = RAM::TotalRAM[y];
+                    }
                     return;
 
                 case 0xA0: //and
@@ -118,8 +130,9 @@ namespace libvm {
                     return;
 
                 case 0xC0: //jmp
-                    uint8_t Address;
+                    uint8_t Address = TotalRAM[ic + 1] + TotalRAM[ic + 2];
                     ic = Address;
+                    ic += 3;
                     printf("jmp");
                     return;
 
@@ -144,11 +157,13 @@ namespace libvm {
                     return;
 
                 case 0xD0: //mov
+                    uint8_t a = TotalRAM[ic + 1], b = TotalRAM[ic + 2];
+                    TotalRAM[a] = TotalRAM[b] //FIXME: idk what i'm doing
                     ic++;
                     printf("mov");
                     return;
 
-                case 0xE0: //inb
+                /*case 0xE0: //inb
                     ic++;
                     printf("inb");
                     return;
@@ -166,7 +181,7 @@ namespace libvm {
                 case 0xF1: //pop
                     ic++;
                     printf("pop");
-                    return;
+                    return;*/
 
                 default:
                     cout << "Got unkown instruction " << CurrentInstruction << ", exiting..." << endl;

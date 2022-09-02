@@ -4,7 +4,7 @@
 
 using namespace std;
 
-namespace libvm {
+namespace Libvm {
     namespace Assembler {
         int main(int argc, char **argv) {
             if(argc == 0 || argc < 1) {

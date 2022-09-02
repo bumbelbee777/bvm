@@ -3,12 +3,13 @@
 #include <iostream>
 
 using namespace std;
-using namespace libvm;
+using namespace Libvm;
 
-int main(int argc, char **argv) {
-    if(argc == 0) {
+int main(int argc, char *argv) {
+    if(argc == 0 || argc < 1) {
         cout << "bvm: No arguments provided." << endl;
+        return 0;
     } else {
-        CPU::StartEmulator(argv[0]);
+        CPU::StartEmulator(ROM::Read(argv[1]));
     }
 }
