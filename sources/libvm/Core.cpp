@@ -6,6 +6,7 @@
 #include <Libvm.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <vector>
 
 using namespace std;
 using namespace Libvm::RAM;
@@ -16,7 +17,7 @@ namespace Libvm {
     }
 
     namespace CPU {
-        using namespace libvm::RAM;
+        using namespace Libvm::RAM;
         bool IsRunning = false;
     
         uint8_t d1  = 0;        //data register 1
@@ -158,7 +159,7 @@ namespace Libvm {
 
                 case 0xD0: //mov
                     uint8_t a = TotalRAM[ic + 1], b = TotalRAM[ic + 2];
-                    TotalRAM[a] = TotalRAM[b] //FIXME: idk what i'm doing
+                    TotalRAM[a] = TotalRAM[b]; //FIXME: idk what i'm doing
                     ic++;
                     printf("mov");
                     return;

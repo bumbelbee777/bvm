@@ -6,12 +6,12 @@ using namespace Libvm::Device;
 namespace Libvm {
     namespace Device {
         void AddDevice(Device *devices[129], struct Device device) {
-            assert(state->devices[device.id].id == 0);
-            memcpy(&state->devices[device.id], &device, sizeof(struct Device));
+            assert(state->devices[device.Id].id == 0);
+            memcpy(&state->devices[device.Id], &device, sizeof(struct Device));
         }
 
         void RemoveDevice(Device *devices[129], uint8_t Id) {
-            struct Device *dev = &state->Devices[id];
+            struct Device *dev = &state->Devices[Id];
                 if (dev->destroy) {
                     dev->destroy(state, dev);
                 }
@@ -24,10 +24,9 @@ namespace Libvm {
         }
 
         void RemoveDevices(Device *devices[129]) {
-            struct Device *dev = &state->Devices[id];
-            FOREACH_DEVICE(state, id, dev) {
-                if (dev->id != 0) {
-                    RemoveDevice(state, dev->id);
+            FOREACH_DEVICE(dev->state, dev->Id, dev) {
+                if (dev->Id != 0) {
+                    RemoveDevice(dev->state, dev->Id);
                 } 
             }
         }
