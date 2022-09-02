@@ -158,7 +158,7 @@ namespace Libvm {
 
                 case 0xD0: //mov
                     uint8_t a = TotalRAM[ic + 1], b = TotalRAM[ic + 2];
-                    TotalRAM[a] = TotalRAM[b] //FIXME: idk what i'm doing
+                    TotalRAM[a] = TotalRAM[b]; //FIXME: idk what i'm doing
                     ic++;
                     printf("mov");
                     return;
