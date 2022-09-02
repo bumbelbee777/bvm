@@ -1,8 +1,8 @@
 posix:
-	clang++ -shared libvm/*.cpp -o libvm.so -I. -fpic
+	clang++ -shared libvm/*.cpp -o libvm.so -Ilibvm/ -fpic
 
 win32:
-	clang++ -shared libvm/*.cpp -o libvm.dll -Ilibvm
+	clang++ -shared libvm/*.cpp -o libvm.dll -Ilibvm/ -Ilibvm
 
 clean-posix:
 	rm -rf libvm.so
