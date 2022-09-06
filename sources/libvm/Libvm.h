@@ -13,8 +13,8 @@ namespace Libvm {
     }
     namespace CPU {
         extern bool IsRunning;
-        extern uint8_t d1;        //data register 1
-        extern uint8_t d2;        //data register 2
+        extern uint8_t d1;   //data register 1
+        extern uint8_t d2;   //data register 2
         extern uint8_t sp;   //stack pointer
         extern uint8_t ic;   //instruction counter
         void StartEmulator(vector<uint8_t> ROM);
@@ -40,14 +40,16 @@ namespace Libvm {
         };
 
         void AddDevice(Device devices[129], struct Device *);
-        void RemoveDevice(Device devices[129], struct Device *);
+        void RemoveDevice(Device *devices[129], uint8_t Id);
         void RemoveDevices(Device devices [129], struct Device *);
 
-        #define FOREACH_DEVICE(h, i, j)     \
-            struct Device *j;               \
-            for (i = 0, j = &(h)->devices[i];   \
-            i < 129;                        \
-            i++,j = &(h)->devices[i])       \
+
+        #define FORdEVICES(s, i, d)             \
+            usize i;                               \
+            struct Device *d;                      \
+            for (i = 0, d = &(s)->devices[i];   \
+            i < DEVICE_MAX;                \
+            i++,d = &(s)->devices[i])   \
 
     }
 

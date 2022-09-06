@@ -55,24 +55,26 @@ namespace Libvm {
 
         void ClockCycle(void) {
             if(!IsRunning) {
-                printf("tried to cycle while CPU isn't running, exiting...");
+                cerr << "tried to cycle while CPU isn't running, exiting..." << endl;
                 throw 1;
             }
 
             uint8_t CurrentInstruction = TotalRAM[ic];
 
             switch(CurrentInstruction) {
-                case 0x00: //hlt
+                case 0x00: { //hlt
                     printf("hlt");
                     HaltEmulator();
                     return;
+                }
 
-                case 0x01: //nop
+                case 0x01: { //nop
                     ic++;
                     printf("nop");
                     return;
+                }
 
-                case 0x02: //mov
+                case 0x02: { //mov
                     uint8_t x = RAM::TotalRAM[ic + 1], y = RAM::TotalRAM[ic + 2];
                     if(y > sizeof(RAM::TotalRAM)) {
                         cerr << "MOV tried to write to " << y << "which is beyond availble RAM, exiting..." << endl;
@@ -81,88 +83,103 @@ namespace Libvm {
                         RAM::TotalRAM[x] = RAM::TotalRAM[y];
                     }
                     return;
+                }
 
-                case 0xA0: //and
+                case 0xA0: { //and
                     d1 = d1 & d2;
                     ic++;
                     printf("and");
                     return;
+                }
 
-                case 0xA1: //xor
+                case 0xA1: { //xor
                     d1 = d1 ^ d2;
                     ic++;
                     printf("xor");
                     return;
+                }
 
-                case 0xB0: //add
+                case 0xB0: { //add
                     d1 += d2;
                     ic++;
                     printf("add");
                     return;
+                }
 
-                case 0xB1: //sub
+                case 0xB1: { //sub
                     d1 -= d2;
                     ic++;
                     printf("sub");
                     return;
+                }
 
-                case 0xB2: //mul
+                case 0xB2: { //mul
                     d1 *= d2;
                     ic++;
                     printf("mul");
                     return;
+                }
 
-                case 0xB3: //div
+                case 0xB3: { //div
                     d1 /= d2;
                     ic++;
                     printf("div");
                     return;
+                }
 
-                case 0xB4: //sqrt
+                case 0xB4: { //sqrt
                     sqrt(d1);
                     ic++;
                     printf("sqrt");
                     return;
+                }
 
-                case 0xB5: //pow
+                case 0xB5: { //pow
                     pow(d1, d2);
                     ic++;
                     printf("pow");
                     return;
+                }
 
-                case 0xC0: //jmp
+                case 0xC0: { //jmp
                     uint8_t Address = TotalRAM[ic + 1] + TotalRAM[ic + 2];
                     ic = Address;
                     ic += 3;
                     printf("jmp");
                     return;
+                }
 
-                case 0xC1: //je
+                case 0xC1: { //je
                     printf("je");
                     ic++;
                     return;
+                }
 
-                case 0xC2: //jne
+                case 0xC2: { //jne
                     printf("jne");
                     ic++;
                     return;
+                }
                 
-                case 0xC3: //jz
+                case 0xC3: { //jz
                     printf("jz");
                     ic++;
                     return;
+                }
 
-                case 0xC4: //jnz
+                case 0xC4: { //jnz
                     printf("jnz");
                     ic++;
                     return;
+                }
 
-                case 0xD0: //mov
+                case 0xD0: { //mov
                     uint8_t a = TotalRAM[ic + 1], b = TotalRAM[ic + 2];
                     TotalRAM[a] = TotalRAM[b]; //FIXME: idk what i'm doing
                     ic++;
                     printf("mov");
                     return;
+                }
 
                 /*case 0xE0: //inb
                     ic++;

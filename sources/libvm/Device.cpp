@@ -20,7 +20,7 @@ namespace Libvm {
                     free(dev->state);
                 }
 
-            dev->id = 0;
+            dev->Id = 0;
         }
 
         void RemoveDevices(Device *devices[129]) {
@@ -30,6 +30,5 @@ namespace Libvm {
                 } 
             }
         }
-        
     }
 }

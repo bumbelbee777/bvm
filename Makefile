@@ -15,3 +15,7 @@ bas-posix:
 
 bas-win32:
 	make -C sources/assembler win32
+
+all-win32: bas-win32 bvm-win32 lib-win32
+
+all-posix: bas-posix bvm-posix lib-win32
