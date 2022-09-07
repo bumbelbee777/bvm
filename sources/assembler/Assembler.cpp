@@ -34,11 +34,6 @@ namespace Libvm {
             {"pop", 0xF1},
         };
 
-        void HandleLabel(char* text) {
-            cout << "Got label " << text << "." << endl;
-            CurrentLabel = text;
-        }
-
         void AssembleFile(string InputFile, string OutputFileName) {
             fstream InFile;
             string line;
