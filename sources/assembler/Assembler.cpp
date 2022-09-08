@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 #include <map>
 #include <Assembler.h>
@@ -40,7 +41,13 @@ namespace Libvm {
             InFile.open(InputFile,ios::out);
             if(InFile.is_open()) {
                 while (!InFile.eof()) {
-                    
+                    string line;
+                    if(OpCodes.find(line) == OpCodes.end()) {
+                        cerr << "Unknown expression " << line << ", skipping..." << endl;
+                        continue;
+                    } else {
+                        //TODO: well do the actual assembling
+                    }
                 }
                 InFile.close();
             }

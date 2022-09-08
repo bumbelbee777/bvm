@@ -24,7 +24,7 @@ namespace Libvm {
         }
 
         void RemoveDevices(Device *devices[129]) {
-            FOREACH_DEVICE(dev->state, dev->Id, dev) {
+            FORDEVICES(dev->state, dev->Id, dev) {
                 if (dev->Id != 0) {
                     RemoveDevice(dev->state, dev->Id);
                 } 

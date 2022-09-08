@@ -44,7 +44,7 @@ namespace Libvm {
         void RemoveDevices(Device devices [129], struct Device *);
 
 
-        #define FORdEVICES(s, i, d)             \
+        #define FORDEVICES(s, i, d)             \
             usize i;                               \
             struct Device *d;                      \
             for (i = 0, d = &(s)->devices[i];   \
