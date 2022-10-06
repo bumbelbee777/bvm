@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cstring>
 #include <Libvm.h>
+#include <ostream>
 #include <stdint.h>
 #include <stdio.h>
 #include <vector>
@@ -29,7 +30,7 @@ namespace Libvm {
 
         void StartEmulator(vector<uint8_t> ROM) {
             if(IsRunning) {
-                printf("Tried to start CPU while it's running, exiting...");
+                cerr <<"Tried to start CPU while it's running, exiting..." << endl;
                 throw 1;
             }
             memset(TotalRAM, 0, 0x70000);

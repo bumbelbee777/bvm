@@ -1,5 +1,6 @@
 #include <Libvm.h>
 #include <cmath>
+#include <type_traits>
 
 using namespace Libvm::CPU;
 

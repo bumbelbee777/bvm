@@ -23,9 +23,15 @@ namespace Libvm {
     }
 
     namespace Display {
-        const int ScreenHeight = 800;
-        const int ScreenWidth = 600;
+        extern const int ScreenHeight;
+        extern const int ScreenWidth;
         void SetPixel();
+        class Color {
+            public:
+                Color(uint8_t r, uint8_t g, uint8_t b);
+                Color(uint8_t mono);
+                Color(uint8_t mono, uint8_t r, uint8_t g, uint8_t b);
+        };
     }
 
     namespace Device {
@@ -48,7 +54,7 @@ namespace Libvm {
             usize i;                               \
             struct Device *d;                      \
             for (i = 0, d = &(s)->devices[i];   \
-            i < DEVICE_MAX;                \
+            i < 128;                \
             i++,d = &(s)->devices[i])   \
 
     }
