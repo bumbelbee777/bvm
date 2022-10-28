@@ -5,13 +5,13 @@ using namespace Libvm::Device;
 
 namespace Libvm {
     namespace Device {
-        void AddDevice(Device *devices[129], struct Device device) {
+        void AddDevice(Device *devices[129], Device device) {
             assert(state->devices[device.Id].id == 0);
-            memcpy(&state->devices[device.Id], &device, sizeof(struct Device));
+            memcpy(&state->devices[device.Id], &device, sizeof(Device));
         }
 
         void RemoveDevice(Device *devices[129], uint8_t Id) {
-            struct Device *dev = &state->Devices[Id];
+            Device *dev = &state->devices[Id];
                 if (dev->destroy) {
                     dev->destroy(state, dev);
                 }

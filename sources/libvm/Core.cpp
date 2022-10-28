@@ -23,8 +23,8 @@ namespace Libvm {
     
         uint8_t d1  = 0;        //data register 1
         uint8_t d2  = 0;        //data register 2
-        float f1 = 0;           //floating point register 1
-        float f2 = 0;           //floating point register 2
+        float f1    = 0;           //floating point register 1
+        float f2    = 0;           //floating point register 2
         uint8_t sp  = (uint8_t)0x1667;   //stack pointer
         uint8_t ic  = 0x0000;   //instruction counter
 
@@ -45,7 +45,7 @@ namespace Libvm {
 
         void HaltEmulator(void) {
             if(!IsRunning) {
-                cerr << "Tried to halt emulator while it's not running, exiting...";
+                cerr << "Tried to halt emulator while it's not running.";
                 throw 1;
             }
             d1 = 0;
@@ -86,63 +86,63 @@ namespace Libvm {
                     return;
                 }
 
-                case 0xA0: { //and
+                case 0x03: { //and
                     d1 = d1 & d2;
                     ic++;
                     printf("and");
                     return;
                 }
 
-                case 0xA1: { //xor
+                case 0x04: { //xor
                     d1 = d1 ^ d2;
                     ic++;
                     printf("xor");
                     return;
                 }
 
-                case 0xB0: { //add
+                case 0x05: { //add
                     d1 += d2;
                     ic++;
                     printf("add");
                     return;
                 }
 
-                case 0xB1: { //sub
+                case 0x06: { //sub
                     d1 -= d2;
                     ic++;
                     printf("sub");
                     return;
                 }
 
-                case 0xB2: { //mul
+                case 0x08: { //mul
                     d1 *= d2;
                     ic++;
                     printf("mul");
                     return;
                 }
 
-                case 0xB3: { //div
+                case 0x09: { //div
                     d1 /= d2;
                     ic++;
                     printf("div");
                     return;
                 }
 
-                case 0xB4: { //sqrt
+                case 0x10: { //sqrt
                     sqrt(d1);
                     ic++;
                     printf("sqrt");
                     return;
                 }
 
-                case 0xB5: { //pow
+                case 0x11: { //pow
                     pow(d1, d2);
                     ic++;
                     printf("pow");
                     return;
                 }
 
-                case 0xC0: { //jmp
+                case 0x12: { //jmp
                     uint8_t Address = TotalRAM[ic + 1] + TotalRAM[ic + 2];
                     ic = Address;
                     ic += 3;
@@ -150,61 +150,50 @@ namespace Libvm {
                     return;
                 }
 
-                case 0xC1: { //je
+                case 0x13: { //je
                     printf("je");
                     ic++;
                     return;
                 }
 
-                case 0xC2: { //jne
+                case 0x14: { //jne
                     printf("jne");
                     ic++;
                     return;
                 }
                 
-                case 0xC3: { //jz
+                case 0x15: { //jz
                     printf("jz");
-                    ic++;
-                    return;
+                    if((zf = 0)) {
+                        uint8_t Address = TotalRAM[ic + 1];
+                        ic = Address;
+                    } else {
+                        return;
+                    }
                 }
 
-                case 0xC4: { //jnz
+                case 0x16: { //jnz
                     printf("jnz");
-                    ic++;
-                    return;
+                    if((zf != 0)) {
+                        uint8_t Address = TotalRAM[ic + 1];
+                        ic = Address;
+                    } else {
+                        return;
+                    }
                 }
 
-                case 0xD0: { //mov
+                case 0x17: { //mov
                     uint8_t a = TotalRAM[ic + 1], b = TotalRAM[ic + 2];
                     TotalRAM[a] = TotalRAM[b]; //FIXME: idk what i'm doing
-                    ic++;
+                    ic+=3;
                     printf("mov");
                     return;
                 }
 
-                /*case 0xE0: //inb
-                    ic++;
-                    printf("inb");
-                    return;
-
-                case 0xE1: //outb
-                    ic++;
-                    printf("outb");
-                    return;
-
-                case 0xF0: //push
-                    ic++;
-                    printf("push");
-                    return;
-
-                case 0xF1: //pop
-                    ic++;
-                    printf("pop");
-                    return;*/
-
-                default:
-                    cout << "Got unkown instruction " << CurrentInstruction << ", exiting..." << endl;
+                default: {
+                    cerr << "Got unkown instruction " << CurrentInstruction << ", exiting..." << endl;
                     throw 1;
+                }
             }
         }
     }
