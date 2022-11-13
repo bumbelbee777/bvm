@@ -1,12 +1,9 @@
-#include <cstddef>
-#include <cmath>
 #include <iostream>
 #include <cstdio>
-#include <cstring>
 #include <Libvm.h>
-#include <ostream>
 #include <stdint.h>
-#include <stdio.h>
+#include <cstring>
+#include <cmath>
 #include <vector>
 
 using namespace std;
@@ -23,10 +20,9 @@ namespace Libvm {
     
         uint8_t d1  = 0;        //data register 1
         uint8_t d2  = 0;        //data register 2
-        float f1    = 0;           //floating point register 1
-        float f2    = 0;           //floating point register 2
         uint8_t sp  = (uint8_t)0x1667;   //stack pointer
         uint8_t ic  = 0x0000;   //instruction counter
+        uint8_t zf  = 0;        //zero flag
 
         void StartEmulator(vector<uint8_t> ROM) {
             if(IsRunning) {
@@ -143,16 +139,20 @@ namespace Libvm {
                 }
 
                 case 0x12: { //jmp
-                    uint8_t Address = TotalRAM[ic + 1] + TotalRAM[ic + 2];
-                    ic = Address;
-                    ic += 3;
+                    ic += 1;
+                    ic += 2;
                     printf("jmp");
                     return;
                 }
 
                 case 0x13: { //je
                     printf("je");
-                    ic++;
+                    uint8_t Address = TotalRAM[ic + 1];
+                    if(d1 == d2) {
+                        ic = Address;
+                    } else {
+                        ic++;
+                    }
                     return;
                 }
 

@@ -31,25 +31,16 @@ namespace Libvm {
         class Device {
             public:
                 uint8_t Id;
-                char name[64];
+                string Name;
                 void *state;
-                void *tick(Device devices[129]);
-                uint8_t *send(Device devices[129]);
-                void *receive(Device devices[129], uint8_t Data);
-                void *destroy(Device devices[129]);
+                void Tick(Device devices[129]);
+                uint8_t Send(Device devices[129]);
+                void Receive(Device devices[129], uint8_t Data);
+                void Destroy(Device devices[129]);
         };
 
-        void AddDevice(Device devices[129]);
-        void RemoveDevice(Device *devices[129], uint8_t Id);
-        void RemoveDevices(Device devices [129]);
-
-
-        #define FORDEVICES(s, i, d)             \
-            usize i;                            \
-            Device *d;                   \
-            for(i = 0, d = &(s)->devices[i];    \
-            i < 128;                            \
-            i++,d = &(s)->devices[i])           \
+        void Add(Device devices[129]);
+        void Remove(Device *devices[129], uint8_t Id);
 
     }
 

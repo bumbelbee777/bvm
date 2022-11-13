@@ -8,4 +8,5 @@ using namespace Libvm;
 
 int main() {
     CPU::StartEmulator(ROM::Read("test.rom"));
+    return 0;
 }
