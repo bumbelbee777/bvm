@@ -36,25 +36,15 @@ namespace Libvm {
         };
 
         void AssembleFile(string InputFile, string OutputFileName) {
-            fstream InFile;
-            string line;
-            InFile.open(InputFile,ios::out);
-            if(InFile.is_open()) {
-                while (!InFile.eof()) {
-                    string line;
-                    if(OpCodes.find(line) == OpCodes.end()) {
-                        cerr << "Unknown expression " << line << ", skipping..." << endl;
-                        continue;
-                    } else {
-                        //TODO: well do the actual assembling
-                    }
+            std::ifstream FileIn(InputFile);
+            for (string line; getline(filein, line);) {
+                if(OpCodes.find(line == OpCodes.end)) {
+                    cerr << "Unknown instruction: " << line << endl;
+                    throw 1;
                 }
-                InFile.close();
-            }
-
-            InFile.open(OutputFileName,ios::in);
-            if (InFile.is_open()) {
-                InFile.close();
+                if(OpCodes.contains(getline(FileIn, line))) {
+                    
+                }
             }
         }
     }

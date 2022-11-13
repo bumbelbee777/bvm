@@ -30,7 +30,10 @@
 *.exe
 *.out
 *.app
+bvm
+bas
 
-# LibVM test files
+# BVM test files
 *.rom
 *.asm
+sources/bvm/bvm
