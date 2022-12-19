@@ -30,7 +30,6 @@
 *.exe
 *.out
 *.app
-bvm
 bas
 
 # BVM test files

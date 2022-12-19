@@ -1,38 +1,44 @@
 #include <iostream>
 #include <cstdio>
-#include <Libvm.h>
-#include <stdint.h>
+#include <Bvm.h>
+#include <cstdint>
 #include <cstring>
 #include <cmath>
 #include <vector>
+#ifdef __linux__
+#include <sys/io.h>
+#elif _WIN32
+#include <conio.h>
+#endif
 
 using namespace std;
-using namespace Libvm::RAM;
+using namespace Bvm::RAM;
 
-namespace Libvm {
+namespace Bvm {
     namespace RAM {
-        uint8_t TotalRAM[0x70000];
+        uint64_t TotalRAM[0x70000];
     }
 
     namespace CPU {
-        using namespace Libvm::RAM;
+        using namespace Bvm::RAM;
         bool IsRunning = false;
     
-        uint8_t d1  = 0;        //data register 1
-        uint8_t d2  = 0;        //data register 2
-        uint8_t sp  = (uint8_t)0x1667;   //stack pointer
-        uint8_t ic  = 0x0000;   //instruction counter
-        uint8_t zf  = 0;        //zero flag
+        uint64_t r1  = 0;        //register 1
+        uint64_t r2  = 0;        //register 2
+        uint64_t r3  = 0;        //register 3
+        uint64_t sp  = 0x20695;   //stack pointer
+        uint64_t ic  = 0x00000;   //instruction counter
+        uint64_t zf  = 0;        //zero flag
 
-        void StartEmulator(vector<uint8_t> ROM) {
+        void StartEmulator(vector<uint64_t> ROM) {
             if(IsRunning) {
                 cerr <<"Tried to start CPU while it's running, exiting..." << endl;
                 throw 1;
             }
             memset(TotalRAM, 0, 0x70000);
-            for(int i = 0x000; i <= 0x1666; i++) {
-                if(i - 0x0000 > ROM.size()) break;
-                TotalRAM[i] = ROM[i - 0x0000];
+            for(int i = 0x20695; i <= 0x70000; i++) {
+                if(i - 0x20695 > ROM.size()) break;
+                TotalRAM[i] = ROM[i - 0x20695];
             }
             IsRunning = true;
             cout << "Emulator is up and running!" << endl;
@@ -41,13 +47,13 @@ namespace Libvm {
 
         void HaltEmulator(void) {
             if(!IsRunning) {
-                cerr << "Tried to halt emulator while it's not running.";
+                cerr << "Tried to halt emulator while it's not running." << endl;
                 throw 1;
             }
-            d1 = 0;
-            d2 = 0;
+            r1 = 0;
+            r2 = 0;
             IsRunning = false;
-            printf("Emulator halted!");
+            printf("Emulator halted!\n");
         }
 
         void ClockCycle(void) {
@@ -56,143 +62,200 @@ namespace Libvm {
                 throw 1;
             }
 
-            uint8_t CurrentInstruction = TotalRAM[ic];
+            uint64_t CurrentInstruction = TotalRAM[ic];
+            uint64_t ReturnAddress;
 
             switch(CurrentInstruction) {
                 case 0x00: { //hlt
-                    printf("hlt");
                     HaltEmulator();
-                    return;
+                    break;
                 }
 
                 case 0x01: { //nop
                     ic++;
-                    printf("nop");
-                    return;
+                    break;
                 }
 
                 case 0x02: { //mov
-                    uint8_t x = RAM::TotalRAM[ic + 1], y = RAM::TotalRAM[ic + 2];
-                    if(y > sizeof(RAM::TotalRAM)) {
-                        cerr << "MOV tried to write to " << y << "which is beyond availble RAM, exiting..." << endl;
+                    uint64_t Source = RAM::TotalRAM[ic + 1], Destination = RAM::TotalRAM[ic + 2];
+                    if(Destination > 0x70000) {
+                        cerr << "MOV tried to write to " << Destination << "which is beyond availble RAM, exiting..." << endl;
                         throw 1;
                     } else {
-                        RAM::TotalRAM[x] = RAM::TotalRAM[y];
+                        RAM::TotalRAM[Source] = RAM::TotalRAM[Destination];
                     }
-                    return;
+                    break;
                 }
 
                 case 0x03: { //and
-                    d1 = d1 & d2;
+                    r3 = r1 & r2;
                     ic++;
-                    printf("and");
-                    return;
+                    break;
                 }
 
-                case 0x04: { //xor
-                    d1 = d1 ^ d2;
+                case 0x04: { //or 
+                    r3 = r1 | r2;
                     ic++;
-                    printf("xor");
-                    return;
+                    break;
                 }
 
-                case 0x05: { //add
-                    d1 += d2;
+                case 0x05: { //not 
+                    r3 = !(r1 | r2);
                     ic++;
-                    printf("add");
-                    return;
+                    break;
                 }
 
-                case 0x06: { //sub
-                    d1 -= d2;
+                case 0x06: { //xor
+                    r3 = r1 ^ r2;
                     ic++;
-                    printf("sub");
-                    return;
+                    break;
                 }
 
-                case 0x08: { //mul
-                    d1 *= d2;
+                case 0x07: { //add
+                    r1 += r2;
                     ic++;
-                    printf("mul");
-                    return;
+                    break;
                 }
 
-                case 0x09: { //div
-                    d1 /= d2;
+                case 0x08: { //sub
+                    r2 -= r1;
                     ic++;
-                    printf("div");
-                    return;
+                    break;
                 }
 
-                case 0x10: { //sqrt
-                    sqrt(d1);
+                case 0x09: { //mul
+                    r1 *= r2;
                     ic++;
-                    printf("sqrt");
-                    return;
+                    break;
                 }
 
-                case 0x11: { //pow
-                    pow(d1, d2);
+                case 0x0a: { //div
+                    r2 /= r1;
                     ic++;
-                    printf("pow");
-                    return;
+                    break;
                 }
 
-                case 0x12: { //jmp
-                    ic += 1;
-                    ic += 2;
-                    printf("jmp");
-                    return;
+                case 0x0b: { //sqrt
+                    sqrt(r1);
+                    ic++;
+                    break;
                 }
 
-                case 0x13: { //je
-                    printf("je");
+                case 0x0c: { //jmp
+                    ic += RAM::TotalRAM[ic + 1];
+                    break;
+                }
+
+                case 0x0d: { //je
                     uint8_t Address = TotalRAM[ic + 1];
-                    if(d1 == d2) {
-                        ic = Address;
-                    } else {
-                        ic++;
-                    }
-                    return;
+                    if(r1 == r2) ic = Address;
+                    else ic++;                    
+                    break;
                 }
 
-                case 0x14: { //jne
-                    printf("jne");
-                    ic++;
-                    return;
+                case 0x0e: { //jne
+                    if(r1 != r2) ic = RAM::TotalRAM[ic + 1];
+                    break;
                 }
                 
-                case 0x15: { //jz
-                    printf("jz");
-                    if((zf = 0)) {
-                        uint8_t Address = TotalRAM[ic + 1];
+                case 0x0f: { //jz
+                    if(zf == 0) {
+                        uint64_t Address = TotalRAM[ic + 1];
                         ic = Address;
-                    } else {
-                        return;
                     }
+                    break;
                 }
 
-                case 0x16: { //jnz
-                    printf("jnz");
-                    if((zf != 0)) {
-                        uint8_t Address = TotalRAM[ic + 1];
+                case 0x10: { //jnz
+                    if(zf != 0) {
+                        uint64_t Address = TotalRAM[ic + 1];
                         ic = Address;
-                    } else {
-                        return;
                     }
+                    else break;                    
                 }
 
-                case 0x17: { //mov
-                    uint8_t a = TotalRAM[ic + 1], b = TotalRAM[ic + 2];
-                    TotalRAM[a] = TotalRAM[b]; //FIXME: idk what i'm doing
-                    ic+=3;
-                    printf("mov");
-                    return;
+                case 0x11: { //in
+                    #ifdef __linux__
+                    inb(RAM::TotalRAM[ic+2]);
+                    #elif _WIN32
+                    _inb(RAM::TotalRAM[ic+2]);
+                    #endif
+                    ic++;
+                    break;
+                }
+
+                case 0x12: { //out
+                    #ifdef __linux__
+                    outb(r3, RAM::TotalRAM[ic+2]);
+                    #elif _WIN32
+                    _outb(r3, RAM::TotalRAM[ic+2]);
+                    #endif
+                    ic++;
+                    break;
+                }
+
+                case 0x13: { //push
+                    if(sp == 0x70000) {
+                        cerr << "Stack overflow." << endl;
+                        throw 1;
+                    }
+                    RAM::TotalRAM[sp++] = RAM::TotalRAM[ic + 1];
+                    ic++;
+                    break;
+                }
+
+                case 0x14: { //pop
+                    if(sp == 0x00000) {
+                        cerr << "Stack underflow." << endl;
+                        throw 1;
+                    }
+                    RAM::TotalRAM[sp--] = RAM::TotalRAM[ic + 1];
+                    ic++; 
+                    break;
+                }
+
+                case 0x15: { //rsh
+                    r3 = r1 << r2; 
+                    ic++;
+                    break;
+                }
+
+                case 0x16: { //lsh 
+                    r3 = r1 >> r2;
+                    ic++;
+                    break;
+                }
+
+                case 0x17: { //load 
+                    r3 = RAM::TotalRAM[ic + 1];
+                    ic++;
+                    break;
+                }
+
+                case 0x18: { //store 
+                    r3 = RAM::TotalRAM[ic + 1];
+                    ic++;
+                    break;
+                }
+
+                case 0x19: { //call
+                    ReturnAddress = RAM::TotalRAM[ic + 2];
+                    ic = RAM::TotalRAM[ic + 1];
+                    break;
+                }
+
+                case 0x20: {//ret
+                    ic = ReturnAddress;
+                    break;
                 }
 
                 default: {
                     cerr << "Got unkown instruction " << CurrentInstruction << ", exiting..." << endl;
                     throw 1;
+                }
+                if(RAM::TotalRAM[ic] > 0x70000) { 
+                    cout << "Program done executing!" << endl; 
+                    exit(0);
                 }
             }
         }
