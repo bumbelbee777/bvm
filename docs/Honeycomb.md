@@ -1,44 +1,150 @@
-# Honeycomb revision 0.1.
+# Honeycomb revision 0.5b.
 ### Introduction.
-Honeycomb is a 64 bit turing-complete computer architecture designed to be simple and compact yet robust and reliable.
+Honeycomb is a 64-bit big endian computer architecture designed to be simple and compact yet robust and reliable.
 ### Registers.
-The Honeycomb architecture contains a few registers to play around with and they are:
-- R1-3: R1 is used to store the result of addition and multiplication, R2 is used to store division and subtraction and R3 is used to store bitwise and logical operations (and, not, or, right shift and so on...).
-- SP: The stack pointer, it points to the top of the stack just like in other CPUs.
-- IC: The instruction counter, it points to the memory address of the current instruction.
-- ZF: The zero flag register, it's set to one when the result of the previous instruction is zero, otherwise it's zero by default.
-### Instruction set.
-The honeycomb instruction set contains the following instructions:
-- NOP: No operation, its opcode is 0x00.
-- HLT: Halts the processor, its opcode is 0x01.
-- MOV: Moves the first parameter to the memory address of the next parameter (mov $0x69, $0x42), its opcode is 0x02.
-- AND: Performs a bitwise AND operation on the R1 and R2 registers and stores the result in the R3 register, its opcode is 0x03.
-- NOT: Performs a bitwise NOT operation on the R1 and R2 registers and stores the result in the R3 register, its opcode is 0x04.
-- OR:  Performs a bitwise OR operation on the R1 and R2 registers and stores the result in the R3 register, its opcode is 0x05.
-- XOR: Performs a bitwise XOR (Exclusive OR) operation on the R1 and R2 registers and stores the result in the R3 register, its opcode is 0x06.
-- ADD: Adds the R1 and R2 registers and stores the result in the R1 register, its opcode is 0x07.
-- SUB: Subtracts the R1 and R2 registers and stores the result in the R2 register, its opcode is 0x08.
-- MUL: Multiplies the R1 and R2 registers and stores the result in the R1 register, its opcode is 0x09.
-- DIV: Divides the R1 and R2 registers and stores the result in the R2 register, its opcode is 0x0a.
-- SQRT: Square roots the R1 and R2 registers and stores the result in the R3 register, its opcode is 0x0b.
-- JMP: Jump to the specified label, its opcode is 0x0c.
-- JE: Jump if R1 and R2 are equal, its opcode is 0x0d.
-- JNE: Jump if R1 and R2 are not equal, its opcode is 0x0e.
-- JZ: Jump if the zero flag is set, its opcode is 0x0f.
-- JNZ: Jump if the zero flag is set, its opcode is 0x10.
-- IN: Read a byte from a port and store it in the R3 register, its opcode is 0x11.
-- OUT: Write a byte to a port and store it in the R3 register, its opcode is 0x12.
-- RSH: Perform a right shift on the R1 and R2 registers, its opcode is 0x13.
-- LSH: Perform a left shift on the R1 and R2 registers, its opcode is 0x14.
-- PUSH: Push a memory address onto the stack, its opcode is 0x15.
-- POP: Pop a memory address from the stack, its opcode is 0x16.
-- LOAD: Load a memory address onto the R3 register, its opcode is 0x17.
-- STORE: Store a memory address onto the R3 register, its opcode is 0x18.
-- CALL: Transfer control to a subroutine, its opcode is 0x19.
-- RET: Return from the current subroutine, its opcode is 0x20.
-Honeycomb instructions are executed in a fetch-decode-execute cycle
-### Memory Layout.
-The honeycomb architecture memory is 64-bits wide and its total size is 0x70000, it's split into various parts like this:
-- 0x00000-0x16666: Free memory.
-- 0x16667-0x20694: Stack memory.
-- 0x20695-0x70000: ROM memory.
+The Honeycomb architecture contains 28 registers which are:
+- ``R0-7``: 8 general purpose 64-bit registers, their binary representations are:
+	- R0: `0b1001110010101010100101100000001110001111000001011101111000000111`.
+	- R1: `0b0011010111001110111110111110101110101101011101111011001001101110`.
+	- R2: `0b1101110111000111011011011100111110110011011011111101111000100001`.
+	- R3: `0b1010000111001101111010000110100000101101010110111010011111001100`.
+	- R4: `0b1100000101001110111110001010010000100001010101101100010110101111`.
+	- R5: `0b0011110111001101101011011110110100101100111101111010011001010001`.
+	- R6: `0b1011101101110110001010001111101100110000011000110011101100001011`.
+	- R7: `0b1010100101110101111101010110011001011110111100110101011011111011`.
+- ``SP``: The stack pointer, its binary representation is `0b1100011000100100111110101010110101110011010011000011010110101011`, it's not set by default meaning the program has to set it up, its maximum size is 7 KiB.
+- ``IC``: The instruction counter, it points to the memory address of the current instruction.
+- ``FR``: Flags register, its first bit serves the role of the equal flag, its second bit serves the role of the zero flag, an its third bit serves the role of the carry flag, its fourth bit serves the role of the less-than flag, its fifth bit is the greater-than flag,and its sixth bit the overflow flag.
+- ``PTB``: Page table base pointer register, it points to the address of the current page table, its binary representation is `0b1001011100111011110100110101101100011111001001010000000110000111`.
+- ``X0-7``: 128-bit SSX (Security & SIMD eXtensions) registers, their binary representations are:
+	- X0: `0b1101100011001110001110001101100111110001111010000010111100001111`.
+	- X1: `0b0011110011010111101100110111011111000011101100110011110001101101`.
+	- X2: `0b1101100010011010110110111101111101010110001110011110011010010111`.
+	- X3: `0b1111010110011011101111110001010111111001111100111110011001011110`.
+	- X4: `0b1011101010010100010100111111010000001000010101111011011101001001`.
+	- X5: `0b1010010011111010010101101001010111011111000110010101101011011011`.
+	- X6: `0b1101010111001001101111100110010101011011111101111001001110111011`.
+	- X7: `0b1001010111100111110100010101011011101101001110001011001001100001`.
+- ``F0-7``: 64-bit floating point FSX registers, their binary represenations are:
+	- F0: `0b1010010100101111101110001001000110000100010001100100011010111001`.
+	- F1: `0b1001001011110101110011010110100111111001111000111110001110101100`.
+	- F2: `0b1001111100111110001000111111011100101001001010000111011100010110`.
+	- F3: `0b1110001000111101110000011101110001010010011110111001101000000001`.
+	- F4: `0b1111101111011110100111011011101011000111001110111011010110100011`.
+	- F5: `0b1001101010111011001110100011011101111011001000100011101101010001`.
+	- F6: `0b1011001001111011010111100010110011011111101011101101000001011011`.
+	- F7: `0b1110110000111111101001011011000111110011101101010110100011001110`.
+# Instruction set.
+## Terminology.
+- Immediate or `imm`: 8 bytes in the ROM, or the size of a single memory address, may be a register, memory address or value.
+- `imm128`: A 128-bit immediate, in other words, 16 bytes in memory or the size of two memory addresses.
+- `immf`: A 32-bit precision floating point immediate.
+- `reg`: A register.
+- `reg128`: A 128-bit SSX register.
+- `regf`: A 32-bit precision floating-point FSX register.
+- `addr`: A memory address.
+
+The following is a list of instructions supported by Honeycomb:
+- NOP: No operation.
+- HLT: Halt.
+- AND (`reg`, `imm`, `imm`): Bitwise AND.
+- OR (`reg`, `imm`, `imm`): Bitwise OR.
+- NOT (`reg`, `imm`, `imm`): Bitwise NOT.
+- XOR (`reg`, `imm`, `imm`): Bitwise XOR.
+- ADD (`reg`, `imm`, `imm`): Perform an addition.
+- SUB (`reg`, `imm`, `imm`): Perform a subtraction.
+- MUL (`reg`, `imm`, `imm`): Perform a multiplication.
+- DIV (`reg`, `imm`, `imm`): Perform a division.
+- MOD (`reg`, `imm`, `imm`): Perform a modulus.
+- CMP (`imm`, `imm`): Compare two immediates, the corresponding flag will be set depending on the result of the comparison.
+- RSH (`reg`, `imm`, `imm`): Right shift an immediate.
+- LSH (`reg`, `imm`, `imm`): Left shift an immediate.
+- ROR (`reg`, `imm`, `imm`): Rotate a bit right.
+- ROL (`reg`, `imm`, `imm`): Rotate a bit left.
+- JMP (`addr`): Unconditionally jump.
+- JE (`addr`): Jump if equal flag is set.
+- JNE (`addr`): Jump if equal flag is not set.
+- JZ (`imm`): Jump if zero flag is set.
+- JNZ (`addr`): Jump if zero flag is not set.
+- JC (`addr`): Jump if carry flag is set.
+- JNC (`addr`): Jump if carry flag is not set.
+- JLT (`addr`): Jump if less-than flag is set.
+- JGT (`addr`): Jump if greater-than flag is set.
+- JO (`addr`): Jump if overflow flag is set.
+- JNO (`addr`): Jump if overflow flag is not set.
+- PUSH (`imm`): Push an immediate to the stack.
+- POP (`imm`): Pop an immediate from stack.
+- LOAD (`imm`, `reg`): Load from memory into a register.
+- STORE (`reg`, `addr`): Store to memory from a register.
+- SWAP (`imm`, `imm`): Swap two immediates.
+- COPY (`imm`, `imm`): Copy the value of the first operand to the second operand.
+- INC (`addr`): Increment a memory index by one.
+- DEC (`addr`): Decrement a memory index by one.
+- IN (`port`, `imm`): Read a byte from a port and store to an immediate.
+- OUT (`port`, `imm`): Write a byte to port.
+- CALL (`addr`): Go to subroutine specified by `addr`.
+- RET: Return from subroutine.
+- INT (`num`): Trigger an interrupt whereas `num` is the interrupt number.
+- IRET: Return from an interrupt.
+- EI: Enable interrupts.
+- DI: Disable interrupts.
+- SYSCALL (`num`): Perform a system call whereas `num` is the system call number.
+- SYSRET: Return from a system call.
+- ATAND (`reg`, `imm`, `imm`): Atomic bitwise AND.
+- ATOR (`reg`, `imm`, `imm`): Atomic bitwise OR.
+- ATNOT (`reg`, `imm`, `imm`): Atomic bitwise NOT.
+- ATXOR (`reg`, `imm`, `imm`): Atomic bitwise exclusive OR (XOR).
+- ATADD (`reg`, `imm`, `imm`): Atomic addition.
+- ATSUB (`reg`, `imm`, `imm`): Atomic subtraction.
+- ATMUL (`reg`, `imm`, `imm`): Atomic multiplication.
+- ATDIV (`reg`, `imm`, `imm`): Atomic division.
+- ATFADD (`addr`, `imm`): Perform an atomic fetch-and-add operation on the memory address `addr`.
+- ATFSUB (`addr`, `imm`): Perform an atomic fetch-and-substract operation on the memory address `addr`.
+- ATCAS (`imm`, `imm`, `imm`): Perform an atomic compare-and-swap operation on the first and second operands.
+- ATCMP (`imm`, `imm`): Atomic CMP.
+- ATINC (`addr`): Atomic INC.
+- ATDEC (`addr`): Atomic DEC.
+- ATLOAD (`imm`, `reg`): Atomic LOAD.
+- ATSTORE (`reg`, `imm`): Atomic STORE.
+- ATSWAP (`imm`, `imm`): Atomic SWAP.
+- WAIT: Inform processor that thes current thread is in a spin-wait loop.
+# SSX instructions. 
+- XAND (`reg128`, `imm128`, `imm128`): 128-bit bitwise AND.
+- OR128 (`reg128`, `imm128`, `imm128`): 128-bit bitwise OR.
+- XNOT (`reg128`, `imm128`, `imm128`): 128-bit bitwise NOT.
+- XXOR (`reg128`, `imm128`, `imm128`): 128-bit bitwise XOR.
+- XADD (`reg128`, `imm128`, `imm128`): 128-bit addition.
+- XSUB (`reg128`, `imm128`, `imm128`): 128-but substraction.
+- XMUL (`reg128`, `imm128`, `imm128`): 128-bit multiplication
+- XDIV (`reg128`, `imm128`, `imm128`): 128-bit division.
+- XMOD (`reg128`, `imm128`, `imm128`): 128-bit MOD.
+- XCMP (`imm128`, `imm128`): 128-bit CMP.
+- XRSH (`reg128`, `imm128`, `imm128`): 128-bit right shift.
+- XLSH (`reg128`, `imm128`, `imm128`): 128-bit left shift
+- XROR (`reg128`, `imm128`, `imm128`): 128-bit right bit rotation.
+- XROL (`reg128`, `imm128`, `imm128`): 128-bit left bit rotation.
+- XLOAD (`addr`, `reg128`): 128-bit LOAD.
+- XSTORE (`reg128`, `reg128`): 128-bit STORE.
+- XCOPY (`reg128`, `reg128`): 128-bit COPY.
+- XSWAP (`reg128`, `reg128`): 128-bit SWAP.
+- XCRYPT (`imm`, `key`, `dst`): Encrypt a value using AES where as `key` is the encryption key to use and and `dst` the destination immediate to store at.
+- XDECRYPT (`imm`, `key`, `dst`): Decrypt a value using AES whereas `key` is the decryption key and `dst` the destination immediate to store result at.
+- XGEN (`imm`, `dst`): Generate a random a28-bit key whereas `dst` is the destination immediate to store at.
+# FSX instructions.
+- FAND (`regf`, `immf`, `immf`): Floating point bitwise AND.
+- FOR (`regf`, `immf`, `immf`): Floating point bitwise OR.
+- FNOT (`regf`, `immf`, `immf`): Floating point bitwise NOT.
+- FXOR (`regf`, `immf`, `immf`): Floating point bitwise XOR.
+- FADD (`regf`, `immf`, `immf`)): Floating point ADD.
+- FSUB (`regf`, `immf`, `immf`): Floating point SUB.
+- FMUL (`regf`, `immf`, `immf`): Floating point MUL.
+- FDIV (`regf`, `immf`, `immf`): Floating point DIV.
+- FMOD (`regf`, `immf`, `immf`): Floating point MOD.
+- FCMP (`immf`, `immf`): Floating point CMP.
+- FRSH (`regf`, `immf`, `immf`): Floating point RSH.
+- FLSH (`regf`, `immf`, `immf`): Floating point LSH.
+- FROR (`regf`, `immf`, `immf`): Floating point ROR.
+- FROL (`regf`, `immf`, `immf`): Floating point ROL.
+- FLOAD (`addr`, `regf`): Floating point LOAD.
+- FSTORE (`regf`, `addr`): Floating point STORE.
+- FCOPY (`immf`, `immf`): Floating point COPY.

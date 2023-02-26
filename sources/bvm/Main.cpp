@@ -1,9 +1,9 @@
-#include <Bvm.h>
+#include <Shared.h>
 #include <cstdio>
 #include <iostream>
-#include <string>
+#include <vector>
 
 int main(int argc, char **argv) {
-    CPU Processor(argv[1]);
+    std::vector<uint64_t> Code = { 0b1100100};
     return 0;
 }

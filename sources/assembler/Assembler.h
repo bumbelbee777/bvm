@@ -1,9 +1,5 @@
 #include <string>
 
-using namespace std;
+using std::string;
 
-namespace Bas {
-    namespace Assembler {
-        void AssembleFile(string InputFile, string OutputFileName);
-    }
-}
+void AssembleFile(string InputFile, string OutputFileName);
