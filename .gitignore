@@ -34,5 +34,12 @@ bas
 
 # BVM test files
 *.rom
-*.asm
+*.bin
 sources/bvm/bvm
+
+.cache/
+build/
+.vscode/
+build-wsl/
+build-sdl/
+.codegraph/
