@@ -1,0 +1,81 @@
+#include "HyperC.h"
+
+#include <iostream>
+#include <string>
+
+static void PrintUsage(const char* ProgramName) {
+    std::cout << "Usage: " << ProgramName << " [options] <input_file> -o <output_file>\n"
+              << "  HyperC compiler driver (hcc).\n"
+              << "  -o <file>    Specify output file\n"
+              << "  -v           Enable verbose output\n"
+              << "  -h, --help   Show this help message\n";
+}
+
+int main(int Argc, char** Argv) {
+    std::string InputFile;
+    std::string OutputFile;
+    bool Verbose = false;
+
+    for (int I = 1; I < Argc; ++I) {
+        std::string Arg = Argv[I];
+        if (Arg == "-h" || Arg == "--help") {
+            PrintUsage(Argv[0]);
+            return 0;
+        }
+        if (Arg == "-v") {
+            Verbose = true;
+            continue;
+        }
+        if (Arg == "-o") {
+            if (I + 1 < Argc) {
+                OutputFile = Argv[++I];
+            } else {
+                std::cerr << "Error: Missing output file after -o\n";
+                return 1;
+            }
+            continue;
+        }
+        if (Arg[0] == '-') {
+            std::cerr << "Error: Unknown option " << Arg << "\n";
+            PrintUsage(Argv[0]);
+            return 1;
+        }
+        if (InputFile.empty()) {
+            InputFile = Arg;
+        } else {
+            std::cerr << "Error: Multiple input files specified\n";
+            return 1;
+        }
+    }
+
+    if (InputFile.empty()) {
+        std::cerr << "Error: No input file specified\n";
+        PrintUsage(Argv[0]);
+        return 1;
+    }
+
+    if (OutputFile.empty()) {
+        const size_t LastDot = InputFile.find_last_of('.');
+        OutputFile = (LastDot != std::string::npos)
+            ? InputFile.substr(0, LastDot) + ".bin"
+            : InputFile + ".bin";
+        if (Verbose) {
+            std::cout << "No output file specified, using default: " << OutputFile << "\n";
+        }
+    }
+
+    try {
+        if (Verbose) {
+            std::cout << "Compiling " << InputFile << " -> " << OutputFile << "...\n";
+        }
+        const HyperCImage Image = CompileFile(InputFile);
+        WriteImage(Image, OutputFile);
+        if (Verbose) {
+            std::cout << "Compilation completed successfully.\n";
+        }
+        return 0;
+    } catch (const std::exception& Ex) {
+        std::cerr << "Compilation error: " << Ex.what() << "\n";
+        return 1;
+    }
+}
